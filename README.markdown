@@ -11,8 +11,8 @@ This guide explains how to set up and run the job scraper script using a Python 
 1. **Clone the Repository (Optional)**  
    If the project is hosted on GitHub, clone it:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/RohitMadhu/WashJobScraper
+   cd WashJobScraper
    ```
 
 2. **Create a Virtual Environment**  
@@ -50,6 +50,3 @@ This guide explains how to set up and run the job scraper script using a Python 
 ## Requirements File
 
 The `requirements.txt` file lists the necessary Python packages. Ensure it is present in the project directory.
-
-<xaiArtifact artifact_id="7e2f97bc-e9b8-410c-93e1-888460246e32" artifact_version_id="0432f4e4-258a-46b8-b705-065fe8147c87" title="requirements.txt" contentType="text/plain">
-requests-html==0.10.0
