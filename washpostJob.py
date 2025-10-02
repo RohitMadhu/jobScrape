@@ -3,6 +3,8 @@ import re
 import json
 import time
 from requests.exceptions import RequestException
+from groq import Groq
+import os
 
 session = HTMLSession()
 url = "https://classifiedsmarketplace.washingtonpost.com/marketplace/search/query?categoryId=154" \
@@ -67,6 +69,28 @@ def get_perm_status(description):
         return "maybe" if has_visa_sponsorship else "maybe"
     return "unlikely"
 
+# Function to determine PERM status with LLM
+def get_perm_status_llm(description):
+    try:
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"You are an expert in US immigration law, specifically PERM (Program Electronic Review Management) labor certification ads. Analyze: {description}. Output only: 'Yes' if PERM ad; 'No' otherwise."
+                }
+            ],
+            temperature=0.1,
+            max_tokens=10,
+            stream=False
+        )
+        response = completion.choices[0].message.content.strip()
+        return "Yes" if "Yes" in response else "No"
+    except Exception as e:
+        print(f"LLM error: {e}")
+        return "Error"
+
 # Function to parse job listing
 def parse_job(job_data):
     content, job_url = job_data  # Unpack tuple of content and URL
@@ -77,6 +101,7 @@ def parse_job(job_data):
             job[key] = match.group(1).strip()
     job["url"] = job_url
     job["perm_status"] = get_perm_status(job.get("description", ""))
+    job["perm_status_ai"] = get_perm_status_llm(job.get("description", ""))
     return job
 
 # Parse all job listings and save partial results
