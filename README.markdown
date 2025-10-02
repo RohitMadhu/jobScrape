@@ -34,8 +34,10 @@ This guide explains how to set up and run the job scraper script using a Python 
    ```bash
    pip install -r requirements.txt
    ```
+4. **To Utilize LLM functionality**
+   Grab a groq API key and define it in your environment variable. 
 
-4. **Run the Script**  
+5. **Run the Script**  
    With the virtual environment activated, run the script:
    ```bash
    python washpostJob.py
